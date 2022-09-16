@@ -3,6 +3,11 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { Audio } from 'expo-av';
 import * as Sharing from 'expo-sharing';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+
+
+
 
 export default function App() {
   const [recording, setRecording] = React.useState();
@@ -25,7 +30,7 @@ export default function App() {
 
         setRecording(recording);
       } else {
-        setMessage("Please grant permission to app to access microphone");
+        setMessage("Please permission for App to access Microphone");
       }
     } catch (err) {
       console.error('Failed to start recording', err);
@@ -51,7 +56,7 @@ export default function App() {
     const minutes = millis / 1000 / 60;
     const minutesDisplay = Math.floor(minutes);
     const seconds = Math.round((minutes - minutesDisplay) * 60);
-    const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
+    const secondsDisplay = seconds < 10 ? `0 ${seconds}` : seconds;
     return `${minutesDisplay}:${secondsDisplay}`;
   }
 
@@ -59,9 +64,11 @@ export default function App() {
     return recordings.map((recordingLine, index) => {
       return (
         <View key={index} style={styles.row}>
+     
           <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
-          <Button style={styles.button} onPress={() => recordingLine.sound.replayAsync()} title="Play"></Button>
+          <Button style={styles.button}   onPress={() => recordingLine.sound.replayAsync()} title="Play"></Button>
           <Button style={styles.button} onPress={() => Sharing.shareAsync(recordingLine.file)} title="Share"></Button>
+ 
         </View>
       );
     });
@@ -70,10 +77,12 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>{message}</Text>
+      
       <Button
-        title={recording ? 'Stop Recording' : 'Start Recording'}
-        onPress={recording ? stopRecording : startRecording} />
+        title={recording ? <FontAwesome5 name="stop-circle" size={50} color="red" /> :<MaterialCommunityIcons name="record-rec" size={50} color="red" />}
+        onPress={recording ? stopRecording : startRecording} /> 
       {getRecordingLines()}
+      
       <StatusBar style="auto" />
     </View>
   );
@@ -82,7 +91,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'olive',
+    backgroundColor: '#153B62',
     alignItems: 'center',
     justifyContent: 'center',
   },
